@@ -26,14 +26,15 @@ namespace GoogleChromeSpy
                 path = spyProcess.MainModule.FileName;
             }
             
-            while (true)
-            {
+           //while (true)
+            //{
                 if (chromeSpy.KeyIsCorrect == true)
                 {
                     spyProcess.Kill();
                     return;
                 }
-            }
+            //}
+            Console.Read();
         }
 
         private static void SpyProcess_Exited(object sender, EventArgs e)

