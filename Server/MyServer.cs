@@ -15,14 +15,14 @@ namespace Server
         readonly int PORT;
         public  event Action<MyClient> ConnectClient;
         public  event Action<MyClient> DisconnectClient;
-        private Task ListeTask;
+        private Task LisenTask;
 
         public MyServer(int port = 8008)
         {
             clients = new List<MyClient>();
             this.PORT = port;
-            ListeTask = new Task(Listen);
-            ListeTask.Start();
+            LisenTask = new Task(Listen);
+            LisenTask.Start();
         }
 
         public void Listen()
@@ -38,7 +38,6 @@ namespace Server
                     MyClient myClient = new MyClient(client, this);
 
                 }
-
             }
             catch (Exception ex)
             {
@@ -47,7 +46,25 @@ namespace Server
             }
         }
 
-        
+        public void GetHistory(string ip)
+        {
+            MyClient client = clients.FirstOrDefault(x => x.Ip.Equals(ip));
+            if(client != null)
+            {
+                byte[] b = Encoding.Unicode.GetBytes("--getFile");
+                client.networkStream.Write(b,0,b.Length);
+            }
+        }
+
+        public void GetVersion(string ip)
+        {
+            MyClient client = clients.FirstOrDefault(x => x.Ip.Equals(ip));
+            if (client != null)
+            {
+                byte[] b = Encoding.Unicode.GetBytes("--getVersion");
+                client.networkStream.Write(b, 0, b.Length);
+            }
+        }
 
         public void DeleteConnetion(string ip)
         {

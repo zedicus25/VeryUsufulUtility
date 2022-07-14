@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +10,6 @@ namespace Server
     {
 
         private MyServer _server;
-
         public string Ip { get; private set; }
         protected TcpClient tcpClient;
         internal NetworkStream networkStream { get; set; }
@@ -75,6 +72,10 @@ namespace Server
                         Ip = builder.ToString().Substring(builder.ToString().IndexOf('p')+1);
                         _server.AddConnection(this);
                     }
+                    if (builder.ToString().Contains("--Version"))
+                    {
+                        File.WriteAllText(Path.Combine(_defaulthPath, $"version_{Ip}.txt"), builder.ToString().Substring(builder.ToString().IndexOf('n')+1));
+                    }
                 }
             }
             catch (Exception ex)
@@ -100,8 +101,8 @@ namespace Server
         {
             tcpClient.Close();
             networkStream.Close();
-            fs.Close();
-            fs.Dispose();
+            fs?.Close();
+            fs?.Dispose();
         }
 
         public override string ToString()

