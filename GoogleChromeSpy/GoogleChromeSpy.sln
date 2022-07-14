@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleChromeSpy", "GoogleChromeSpy.csproj", "{15C11B98-0E93-4BFD-B6C4-444FDBAF8E63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeryUsefulUtility", "VeryUsefulUtility\VeryUsefulUtility.csproj", "{A619B06F-920A-496A-AC5D-B7759BD0E546}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15C11B98-0E93-4BFD-B6C4-444FDBAF8E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15C11B98-0E93-4BFD-B6C4-444FDBAF8E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15C11B98-0E93-4BFD-B6C4-444FDBAF8E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15C11B98-0E93-4BFD-B6C4-444FDBAF8E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A619B06F-920A-496A-AC5D-B7759BD0E546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A619B06F-920A-496A-AC5D-B7759BD0E546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A619B06F-920A-496A-AC5D-B7759BD0E546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A619B06F-920A-496A-AC5D-B7759BD0E546}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91E2C6F0-5983-4FF7-940A-996338C4B05F}
+	EndGlobalSection
+EndGlobal
