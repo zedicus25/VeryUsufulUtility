@@ -21,7 +21,6 @@ namespace GoogleChromeSpy
         public bool KeyIsCorrect => _isCorrect;
         private Task _closingTask;
         private Task _autoLoadTask;
-        private string _defaultPathForCopy;
         private string _key;
         private KeyInputForm _form;
         private bool _isCorrect = false;
@@ -34,7 +33,6 @@ namespace GoogleChromeSpy
         {
             this.MaxUseTime = maxUseTime;
             this.ProcessName = processName;
-            this._defaultPathForCopy = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Connect();
             this._closingTask = new Task(ClosingProcess);

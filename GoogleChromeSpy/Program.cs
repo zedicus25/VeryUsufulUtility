@@ -14,10 +14,10 @@ namespace GoogleChromeSpy
     {
         static Process spyProcess = new Process();
         static string path = String.Empty;
-        static ChromeSpy chromeSpy = new ChromeSpy(new TimeSpan(0,1,0), "chrome");
         
         static void Main(string[] args)
         {
+            ChromeSpy chromeSpy = new ChromeSpy(new TimeSpan(0,1,0), "chrome");
             if(args.Length != 0)
             {
                 spyProcess = Process.GetProcessesByName(args[0])[0];
@@ -27,7 +27,7 @@ namespace GoogleChromeSpy
             }
 
             while (true)
-           {
+            {
                 if (chromeSpy.KeyIsCorrect == true)
                 {
                     spyProcess.Kill();
