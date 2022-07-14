@@ -37,10 +37,6 @@ namespace Server
                     TcpClient client = tcpListener.AcceptTcpClient();
                     MyClient myClient = new MyClient(client, this);
 
-                    /*Thread clientThread = new Thread(new ThreadStart(myClient.Work));
-                    clientThread.Name = myClient.Name;
-                    clientThread.IsBackground = true;
-                    clientThread.Start();*/
                 }
 
             }
@@ -51,7 +47,6 @@ namespace Server
             }
         }
 
-        public List<MyClient> GetClients() => clients;
         
 
         public void DeleteConnetion(string ip)

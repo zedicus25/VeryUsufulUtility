@@ -20,33 +20,22 @@ namespace Server
             myServer = new MyServer();
             myServer.ConnectClient += MyServer_ConnectClient;
             myServer.DisconnectClient += MyServer_DisconnectClient;
-            /*Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    usersLB.Invoke((MethodInvoker)delegate
-                    {
-                        usersLB.Items.Clear();
-                        foreach (var item in myServer.GetClients())
-                        {
-                            usersLB.Items.Add(item);
-                        }
-                    });
-                    Thread.Sleep(5000);
-                }
-            });*/
         }
 
         private void MyServer_DisconnectClient(MyClient obj)
         {
+            if (obj.Ip.Equals(String.Empty))
+                return;
             usersLB.Invoke((MethodInvoker)delegate
             {
                 usersLB.Items.Remove(obj);
-            }); ;
+            });
         }
 
         private void MyServer_ConnectClient(MyClient obj)
         {
+            if (obj.Ip == null)
+                return;
             usersLB.Invoke((MethodInvoker)delegate
             {
                 usersLB.Items.Add(obj);
