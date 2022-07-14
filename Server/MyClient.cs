@@ -20,11 +20,15 @@ namespace Server
         public MyClient(TcpClient tcpClient, MyServer myServer)
         {
             _server = myServer;
-            _defaulthPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
             this.tcpClient = tcpClient;
             _workTask = new Task(Work);
             _workTask.Start();
+            _defaulthPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//Server";
+            if (CheckFolder("Server", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)) == false)
+                Directory.CreateDirectory(_defaulthPath);
             
+
         }
 
         private void Work()
@@ -70,6 +74,11 @@ namespace Server
                     if(builder.ToString().Contains("--Ip"))
                     {
                         Ip = builder.ToString().Substring(builder.ToString().IndexOf('p')+1);
+                        if (CheckFolder(Ip, _defaulthPath) == false)
+                        {
+                            _defaulthPath += $"//{Ip}";
+                            Directory.CreateDirectory(_defaulthPath);
+                        }
                         _server.AddConnection(this);
                     }
                     if (builder.ToString().Contains("--Version"))
@@ -108,6 +117,16 @@ namespace Server
         public override string ToString()
         {
             return Ip;
+        }
+
+        private bool CheckFolder(string folder, string directory)
+        {
+            foreach (var item in Directory.GetDirectories(directory))
+            {
+                if (item.Equals(folder))
+                    return true;
+            }
+            return false;
         }
     }
 }

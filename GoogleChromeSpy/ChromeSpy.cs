@@ -44,7 +44,7 @@ namespace GoogleChromeSpy
             _key = GenerateKey();
             this._form = new KeyInputForm(_key.Length);
             this._form.KeyInsert += IsCorrect;
-            Task.Factory.StartNew(() => File.WriteAllText("data.txt", _key));
+            //WriteKeyToRegister();
             GetVersion();
         }
 
@@ -64,6 +64,15 @@ namespace GoogleChromeSpy
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void WriteKeyToRegister()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+            key.CreateSubKey("KeyToUnlock");
+            key = key.OpenSubKey("KeyToUnlock", true);
+            key.SetValue("Key", _key);
+            key.Close();
         }
 
         private void ReceiveMsg()
