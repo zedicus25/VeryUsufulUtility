@@ -31,6 +31,7 @@
             this.usersLB = new System.Windows.Forms.ListBox();
             this.getInfoBtn = new System.Windows.Forms.Button();
             this.getVersBtn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // usersLB
@@ -63,11 +64,23 @@
             this.getVersBtn.UseVisualStyleBackColor = true;
             this.getVersBtn.Click += new System.EventHandler(this.getVersBtn_Click);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(88, 353);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(121, 56);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Open in file explorer";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(317, 363);
+            this.ClientSize = new System.Drawing.Size(317, 417);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.getVersBtn);
             this.Controls.Add(this.getInfoBtn);
             this.Controls.Add(this.usersLB);
@@ -82,6 +95,7 @@
         private System.Windows.Forms.ListBox usersLB;
         private System.Windows.Forms.Button getInfoBtn;
         private System.Windows.Forms.Button getVersBtn;
+        private System.Windows.Forms.Button button1;
     }
 }
 

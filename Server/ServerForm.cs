@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Server
@@ -46,6 +48,14 @@ namespace Server
             if (usersLB.SelectedItem == null)
                 return;
             myServer.GetVersion(usersLB.SelectedItem.ToString());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(usersLB.SelectedItem == null)
+                return;
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\Server\\{usersLB.SelectedItem.ToString()}";
+            Process.Start(path);
         }
     }
 }

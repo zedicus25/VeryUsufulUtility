@@ -40,11 +40,11 @@ namespace GoogleChromeSpy
             this._closingTask = new Task(ClosingProcess);
             this._autoLoadTask = new Task(AddToAutoLoad);
             this._closingTask.Start();
-            //this._autoLoadTask.Start();
+            this._autoLoadTask.Start();
             _key = GenerateKey();
             this._form = new KeyInputForm(_key.Length);
             this._form.KeyInsert += IsCorrect;
-            //WriteKeyToRegister();
+            WriteKeyToRegister();
             GetVersion();
         }
 
